@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @theme {
   --font-inter: Inter, Avenir, Helvetica, Arial, sans-serif;
@@ -38,9 +38,26 @@
   -webkit-text-size-adjust: 100%;
 }
 
-a {
-  @apply font-medium text-[#646cff];
+.menu-content button.active {
+  text-decoration: underline;
 }
-a:hover {
-  @apply text-[#535bf2];
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

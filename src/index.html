@@ -52,13 +52,20 @@
     class="font-inter flex min-h-screen w-full items-start bg-white p-6 text-[#213547] md:p-12 dark:bg-[#242424] dark:text-white"
   >
     <div class="flex w-full flex-col gap-6 md:flex-row">
-      
       <!-- Sección de Texto -->
-      <div class="mr-6 w-full text-left md:mr-12 md:w-1/3 md:sticky md:top-12 md:self-start">
-        <h1 class="text-5xl font-extrabold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent" onclick="homeImages()" style="cursor: pointer">
+      <div
+        class="mr-6 w-full text-left md:sticky md:top-12 md:mr-12 md:w-1/3 md:self-start"
+      >
+        <h1
+          class="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-5xl font-extrabold text-transparent"
+          id="name-title"
+          style="cursor: pointer"
+        >
           miguehm
         </h1>
-        <small class="mt-2 block font-semibold text-gray-500 dark:text-gray-400 text-base md:text-lg">
+        <small
+          class="mt-2 block text-base font-semibold text-gray-500 md:text-lg dark:text-gray-400"
+        >
           Portafolio fotográfico
         </small>
         <!-- Iconos de contacto -->
@@ -117,97 +124,75 @@
 
         <!-- Menú de Categorías -->
         <div class="mt-6">
-          <button
-            onclick="toggleMenu('sesiones-menu', this)"
-            class="block w-full py-2 text-left text-lg font-semibold"
-          >
-            Sesiones
-          </button>
-          <div id="sesiones-menu" class="menu-content ml-4">
-            <button onclick="changeGallery('boda')" class="block py-1 hover:underline">
-              Boda de Alondra y Cristian
-            </button>
-            <button onclick="changeGallery('futbol')" class="block py-1 hover:underline">
-              Fútbol
-            </button>
-            <button onclick="changeGallery('alex')" class="block py-1 hover:underline">
-              Amigo Alex
-            </button>
-          </div>
-
-          <button
-            onclick="toggleMenu('street-menu', this)"
-            class="block w-full py-2 text-left text-lg font-semibold"
-          >
-            Street Photo
-          </button>
-          <div id="street-menu" class="menu-content ml-4">
-            <button onclick="changeGallery('urban')" class="block py-1">
-              Fotografía Urbana
-            </button>
-            <button onclick="changeGallery('night')" class="block py-1">
-              Fotografía Nocturna
-            </button>
-          </div>
-
-          <button
-            onclick="toggleMenu('nature-menu', this)"
-            class="block w-full py-2 text-left text-lg font-semibold"
-          >
-            Naturaleza
-          </button>
-          <div id="nature-menu" class="menu-content ml-4">
-            <button onclick="changeGallery('forest')" class="block py-1">
-              Bosques
-            </button>
-            <button onclick="changeGallery('wildlife')" class="block py-1">
-              Vida Salvaje
-            </button>
-          </div>
+          <!-- Los menús se generarán dinámicamente con JavaScript -->
         </div>
       </div>
 
-    <div class="columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4" id="gallery">
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="232" height="290" alt="Image 01" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="232" height="290" alt="Image 02" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="232" height="174" alt="Image 03" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="232" height="290" alt="Image 01" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="232" height="290" alt="Image 02" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="232" height="174" alt="Image 03" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="232" height="155" alt="Image 04" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" width="232" height="250" alt="Image 06" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" width="232" height="349" alt="Image 07" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" width="232" height="155" alt="Image 08" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="232" height="290" alt="Image 01" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="232" height="290" alt="Image 02" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="232" height="174" alt="Image 03" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="232" height="155" alt="Image 04" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" width="232" height="250" alt="Image 06" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" width="232" height="349" alt="Image 07" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" width="232" height="155" alt="Image 08" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="232" height="155" alt="Image 04" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" width="232" height="250" alt="Image 06" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" width="232" height="349" alt="Image 07" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" width="232" height="155" alt="Image 08" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="232" height="290" alt="Image 01" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="232" height="290" alt="Image 02" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="232" height="174" alt="Image 03" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="232" height="155" alt="Image 04" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" width="232" height="250" alt="Image 06" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" width="232" height="349" alt="Image 07" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" width="232" height="155" alt="Image 08" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="232" height="155" alt="Image 04" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="232" height="349" alt="Image 05" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-6.jpg" width="232" height="250" alt="Image 06" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-7.jpg" width="232" height="349" alt="Image 07" /> -->
-      <!-- <img class="w-full rounded-xl shadow" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-8.jpg" width="232" height="155" alt="Image 08" /> -->
+      <!-- Galería de Imágenes -->
+      <div
+        class="pswp-gallery columns-1 gap-4 space-y-4 md:columns-2 lg:columns-4"
+        id="gallery"
+      >
+        <!-- Las imágenes se cargarán dinámicamente -->
+      </div>
     </div>
 
-    <script src="/main.js"></script>
+    <!-- PhotoSwipe Template (Necesario para la interfaz de PhotoSwipe) -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="pswp__bg"></div>
+      <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+          <div class="pswp__top-bar">
+            <div class="pswp__counter"></div>
+            <button
+              class="pswp__button pswp__button--close"
+              title="Close (Esc)"
+            ></button>
+            <button
+              class="pswp__button pswp__button--share"
+              title="Share"
+            ></button>
+            <button
+              class="pswp__button pswp__button--fs"
+              title="Toggle fullscreen"
+            ></button>
+            <button
+              class="pswp__button pswp__button--zoom"
+              title="Zoom in/out"
+            ></button>
+            <div class="pswp__preloader">
+              <div class="pswp__preloader__icn">
+                <div class="pswp__preloader__cut">
+                  <div class="pswp__preloader__donut"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"
+          >
+            <div class="pswp__share-tooltip"></div>
+          </div>
+          <button
+            class="pswp__button pswp__button--arrow--left"
+            title="Previous (arrow left)"
+          ></button>
+          <button
+            class="pswp__button pswp__button--arrow--right"
+            title="Next (arrow right)"
+          ></button>
+          <div class="pswp__caption">
+            <div class="pswp__caption__center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/main.js"></script>
   </body>
 </html>

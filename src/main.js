@@ -2,6 +2,10 @@
 let contentStructure = null;
 let activeMenu = null;
 let activeButton = null;
+let lightbox = null;
+
+// Importar la función de inicialización de PhotoSwipe
+import { initPhotoSwipe } from "./photoswipe";
 
 // Función para cargar la estructura de contenido
 async function loadContentStructure() {
@@ -12,6 +16,9 @@ async function loadContentStructure() {
     }
     contentStructure = await response.json();
     generateMenus();
+
+    // Inicializar con imágenes aleatorias
+    homeImages();
   } catch (error) {
     console.error("Error al cargar la estructura de contenido:", error);
   }
@@ -77,6 +84,12 @@ function capitalizeFirstLetter(string) {
 function changeGallery(category, subcategory) {
   const gallery = document.getElementById("gallery");
 
+  // Destruir la instancia anterior de PhotoSwipe si existe
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
+
   // Remover clase activa de todos los botones
   document.querySelectorAll(".menu-content button").forEach((btn) => {
     btn.classList.remove("active");
@@ -91,24 +104,50 @@ function changeGallery(category, subcategory) {
 
   setTimeout(() => {
     gallery.innerHTML = "";
-    gallery.className = "columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
+    gallery.className =
+      "pswp-gallery columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
 
     // Obtener las imágenes para esta categoría/subcategoría
     const images = contentStructure[category][subcategory];
     const basePath = `/content/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/`;
 
     // Crear elementos para cada imagen
-    images.forEach((image) => {
+    images.forEach((image, index) => {
+      const imgContainer = document.createElement("figure");
+      imgContainer.className = "mb-4";
+
+      const imgLink = document.createElement("a");
+      imgLink.href = basePath + image;
+      imgLink.className = "pswp-item";
+
+      // No definir dimensiones fijas para permitir que PhotoSwipe detecte las reales
+      // Se maneja ahora con el evento contentLoad en photoswipe.js
+
       const img = document.createElement("img");
       img.src = basePath + image;
       img.className = "w-full rounded-xl shadow";
-      img.alt = `Imagen de ${subcategory}`;
-      gallery.appendChild(img);
+      img.alt = `${subcategory} - Imagen ${index + 1}`;
+
+      // Pre-carga la imagen para obtener sus dimensiones reales
+      const tempImg = new Image();
+      tempImg.onload = function () {
+        // Una vez cargada, establecer las dimensiones reales
+        imgLink.dataset.pswpWidth = tempImg.naturalWidth;
+        imgLink.dataset.pswpHeight = tempImg.naturalHeight;
+      };
+      tempImg.src = basePath + image;
+
+      imgLink.appendChild(img);
+      imgContainer.appendChild(imgLink);
+      gallery.appendChild(imgContainer);
     });
 
     gallery.classList.remove("fade-out");
     void gallery.offsetWidth; // Forzar reflow
     gallery.classList.add("fade-in");
+
+    // Inicializar PhotoSwipe después de cargar las imágenes
+    lightbox = initPhotoSwipe();
   }, 200);
 }
 
@@ -122,6 +161,12 @@ function homeImages() {
   }
 
   const gallery = document.getElementById("gallery");
+
+  // Destruir la instancia anterior de PhotoSwipe si existe
+  if (lightbox) {
+    lightbox.destroy();
+    lightbox = null;
+  }
 
   // Aplicar animación de salida si ya hay contenido
   if (gallery.children.length > 0) {
@@ -137,30 +182,54 @@ function homeImages() {
 }
 
 // Función auxiliar para poblar la galería con imágenes aleatorias
+// Función auxiliar para poblar la galería con imágenes aleatorias
 function populateHomeGallery(gallery) {
   // Limpiar la galería
   gallery.innerHTML = "";
-  gallery.className = "columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
+  gallery.className =
+    "pswp-gallery columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
 
   // Obtener las imágenes aleatorias
   const randomImages = contentStructure["random"];
 
   // Crear elementos para cada imagen
-  randomImages.forEach((imagePath) => {
+  randomImages.forEach((imagePath, index) => {
+    const imgContainer = document.createElement("figure");
+    imgContainer.className = "mb-4";
+
+    const imgLink = document.createElement("a");
+    imgLink.href = imagePath;
+    imgLink.className = "pswp-item";
+
+    // No especificar dimensiones fijas inicialmente
+
     const img = document.createElement("img");
     img.src = imagePath; // Las rutas ya vienen completas
     img.className = "w-full rounded-xl shadow";
-    img.alt = "Imagen destacada";
-    gallery.appendChild(img);
+    img.alt = `Imagen destacada ${index + 1}`;
+
+    // Pre-carga la imagen para obtener sus dimensiones reales
+    const tempImg = new Image();
+    tempImg.onload = function () {
+      // Una vez cargada, establecer las dimensiones reales
+      imgLink.dataset.pswpWidth = tempImg.naturalWidth;
+      imgLink.dataset.pswpHeight = tempImg.naturalHeight;
+    };
+    tempImg.src = imagePath;
+
+    imgLink.appendChild(img);
+    imgContainer.appendChild(imgLink);
+    gallery.appendChild(imgContainer);
   });
 
   // Aplicar animación de entrada
   gallery.classList.remove("fade-out");
   void gallery.offsetWidth; // Forzar reflow
   gallery.classList.add("fade-in");
-}
 
-homeImages();
+  // Inicializar PhotoSwipe después de cargar las imágenes
+  lightbox = initPhotoSwipe();
+}
 
 // Función para alternar el menú con animación mejorada (mantener igual)
 function toggleMenu(id, button) {
@@ -194,3 +263,6 @@ function toggleMenu(id, button) {
 
 // Cargar la estructura de contenido cuando se carga la página
 document.addEventListener("DOMContentLoaded", loadContentStructure);
+
+const nameTitle = document.getElementById("name-title");
+nameTitle.onclick = homeImages;

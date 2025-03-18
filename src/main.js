@@ -42,8 +42,8 @@ function generateMenus() {
     // Crear el botón principal de categoría
     const categoryButton = document.createElement("button");
     categoryButton.className =
-      "block w-full py-2 text-left text-lg font-semibold";
-    categoryButton.textContent = capitalizeFirstLetter(category);
+      "block w-full py-2 text-left text-lg font-semibold text-gray-400 hover:text-white underline decoration-2 decoration-gray-400 underline-offset-4 custom-underline";
+    categoryButton.textContent = capitalizeAllLetters(category);
     categoryButton.onclick = function () {
       toggleMenu(`${categoryId}-menu`, this);
     };
@@ -60,7 +60,8 @@ function generateMenus() {
 
       // Crear botón de subcategoría
       const subcategoryButton = document.createElement("button");
-      subcategoryButton.className = "block py-1 hover:underline";
+      subcategoryButton.className =
+        "block py-1 text-gray-400 hover:text-white hover:underline";
       subcategoryButton.textContent = capitalizeFirstLetter(subcategory);
       subcategoryButton.onclick = function () {
         changeGallery(category, subcategory);
@@ -78,6 +79,10 @@ function generateMenus() {
 // Función para capitalizar la primera letra
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function capitalizeAllLetters(string) {
+  return string.toUpperCase();
 }
 
 // Función para cambiar dinámicamente la galería con animación
@@ -234,6 +239,7 @@ function populateHomeGallery(gallery) {
 // Función para alternar el menú con animación mejorada (mantener igual)
 function toggleMenu(id, button) {
   const menu = document.getElementById(id);
+  console.log(id);
 
   // Si el menú ya está abierto, lo cerramos
   if (menu === activeMenu) {

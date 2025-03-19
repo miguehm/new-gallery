@@ -4,22 +4,19 @@ export default defineConfig({
     open: "/index.html",
   },
   base: "/new-gallery/",
-  // Asegúrate de que los archivos estáticos se sirvan correctamente
   publicDir: "public",
-  // Configuración para resolver módulos
   resolve: {
     alias: {
-      // Si necesitas alguna alias específico
+      // Añade este alias para ayudar con la resolución del CSS
+      "photoswipe/style.css": "photoswipe/dist/photoswipe.css",
     },
   },
   build: {
     outDir: "../dist",
     emptyOutDir: true,
     assetsDir: "assets",
-    // Maneja mejor los archivos grandes
     chunkSizeWarningLimit: 600,
     rollupOptions: {
-      external: ["photoswipe", "photoswipe/lightbox"],
       output: {
         manualChunks: {
           photoswipe: ["photoswipe", "photoswipe/lightbox"],

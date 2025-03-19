@@ -6,6 +6,7 @@ let lightbox = null;
 
 // Importar la función de inicialización de PhotoSwipe
 import { initPhotoSwipe } from "./photoswipe";
+// import "photoswipe/style.css";
 
 // Función para cargar la estructura de contenido
 async function loadContentStructure() {

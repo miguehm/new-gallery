@@ -17,6 +17,9 @@ export default defineConfig({
     assetsDir: "assets",
     chunkSizeWarningLimit: 600,
     rollupOptions: {
+      input: {
+        main: "src/index.html",
+      },
       output: {
         manualChunks: {
           photoswipe: ["photoswipe", "photoswipe/lightbox"],

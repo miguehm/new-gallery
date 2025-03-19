@@ -9,7 +9,7 @@ export function initPhotoSwipe() {
     // Añadir opciones para mejorar el comportamiento de gestos y zoom
     wheelToZoom: true, // Permite usar la rueda del mouse para hacer zoom
     pinchToClose: true, // Permite pellizcar para cerrar
-    maxZoomLevel: 5, // Nivel máximo de zoom (ajustable según necesidades)
+    maxZoomLevel: 4, // Nivel máximo de zoom (ajustable según necesidades)
     padding: { top: 20, bottom: 20, left: 20, right: 20 }, // Padding para evitar que las imágenes toquen los bordes
     imageClickAction: "zoom-or-close", // Hacer clic para zoom o cerrar
     tapAction: "zoom-or-close", // Tap para zoom o cerrar

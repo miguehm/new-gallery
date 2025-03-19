@@ -3,6 +3,7 @@ export default defineConfig({
   server: {
     open: "/index.html",
   },
+  base = "/new-gallery/"
   // Asegúrate de que los archivos estáticos se sirvan correctamente
   publicDir: "public",
   // Configuración para resolver módulos

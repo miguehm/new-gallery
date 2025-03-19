@@ -61,7 +61,3 @@
     transform: translateY(0);
   }
 }
-
-.custom-underline {
-  text-decoration-style: dotted; /* Puedes usar dashed, wavy, etc. */
-}

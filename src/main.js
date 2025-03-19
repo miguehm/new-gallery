@@ -42,7 +42,7 @@ function generateMenus() {
     // Crear el botón principal de categoría
     const categoryButton = document.createElement("button");
     categoryButton.className =
-      "block w-full py-2 text-left text-lg font-semibold text-gray-400 hover:text-white underline decoration-2 decoration-gray-400 underline-offset-4 custom-underline";
+      "block w-full py-2 text-left text-lg font-semibold text-gray-400 hover:text-white underline decoration-2 decoration-gray-400 underline-offset-4";
     categoryButton.textContent = capitalizeAllLetters(category);
     categoryButton.onclick = function () {
       toggleMenu(`${categoryId}-menu`, this);

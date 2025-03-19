@@ -36,9 +36,15 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Paso adicional para ejecutar el comando generate-json con npm
+      # Paso adicional para instalar bun
+      - name: Install Bun
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          echo "$HOME/.bun/bin" >> $GITHUB_PATH
+
+      # Paso adicional para ejecutar el comando generate-json
       - name: Generate JSON
-        run: npm run generate-json
+        run: bun run generate-json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

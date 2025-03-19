@@ -1,6 +1,6 @@
 import PhotoSwipeLightbox from "photoswipe/lightbox";
 // import "photoswipe/style.css";
-import "photoswipe/dist/photoswipe.css";
+import "./photoswipe.css";
 
 export function initPhotoSwipe() {
   const lightbox = new PhotoSwipeLightbox({

@@ -6,10 +6,7 @@ export default defineConfig({
   base: "/new-gallery/",
   publicDir: "public",
   resolve: {
-    alias: {
-      // Añade este alias para ayudar con la resolución del CSS
-      "photoswipe/style.css": "photoswipe/dist/photoswipe.css",
-    },
+    alias: {},
   },
   build: {
     outDir: "../dist",
@@ -17,9 +14,6 @@ export default defineConfig({
     assetsDir: "assets",
     chunkSizeWarningLimit: 600,
     rollupOptions: {
-      input: {
-        main: "src/index.html",
-      },
       output: {
         manualChunks: {
           photoswipe: ["photoswipe", "photoswipe/lightbox"],

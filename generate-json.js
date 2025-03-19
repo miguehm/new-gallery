@@ -76,4 +76,10 @@ fs.writeFileSync(
   path.join(__dirname, "./src/content-structure.json"),
   JSON.stringify(structure, null, 2),
 );
+
+fs.writeFileSync(
+  path.join(__dirname, "./dist/content-structure.json"),
+  JSON.stringify(structure, null, 2),
+);
+
 console.log("Structure JSON generated successfully!");

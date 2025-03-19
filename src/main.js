@@ -115,7 +115,7 @@ function changeGallery(category, subcategory) {
 
     // Obtener las imágenes para esta categoría/subcategoría
     const images = contentStructure[category][subcategory];
-    const basePath = `/content/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/`;
+    // const basePath = `/content/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/`;
 
     // Crear elementos para cada imagen
     images.forEach((image, index) => {
@@ -123,14 +123,16 @@ function changeGallery(category, subcategory) {
       imgContainer.className = "mb-4";
 
       const imgLink = document.createElement("a");
-      imgLink.href = basePath + image;
+      // imgLink.href = basePath + image;
+      imgLink.href = image;
       imgLink.className = "pswp-item";
 
       // No definir dimensiones fijas para permitir que PhotoSwipe detecte las reales
       // Se maneja ahora con el evento contentLoad en photoswipe.js
 
       const img = document.createElement("img");
-      img.src = basePath + image;
+      // img.src = basePath + image;
+      img.src = image;
       img.className = "w-full rounded-xl shadow";
       img.alt = `${subcategory} - Imagen ${index + 1}`;
 
@@ -141,7 +143,8 @@ function changeGallery(category, subcategory) {
         imgLink.dataset.pswpWidth = tempImg.naturalWidth;
         imgLink.dataset.pswpHeight = tempImg.naturalHeight;
       };
-      tempImg.src = basePath + image;
+      // tempImg.src = basePath + image;
+      tempImg.src = image;
 
       imgLink.appendChild(img);
       imgContainer.appendChild(imgLink);

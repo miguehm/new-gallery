@@ -19,6 +19,7 @@ export default defineConfig({
     // Maneja mejor los archivos grandes
     chunkSizeWarningLimit: 600,
     rollupOptions: {
+      external: ["photoswipe", "photoswipe/lightbox"],
       output: {
         manualChunks: {
           photoswipe: ["photoswipe", "photoswipe/lightbox"],

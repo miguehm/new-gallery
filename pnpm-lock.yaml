@@ -11,6 +11,9 @@ importers:
       cssnano:
         specifier: ^7.0.6
         version: 7.0.6(postcss@8.5.3)
+      photoswipe:
+        specifier: ^5.4.4
+        version: 5.4.4
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.0.14
@@ -25,8 +28,8 @@ importers:
         specifier: ^0.6.11
         version: 0.6.11(prettier@3.5.3)
       tailwindcss:
-        specifier: ^4.0.14
-        version: 4.0.14
+        specifier: ^4.0.16
+        version: 4.0.16
       vite:
         specifier: ^6.2.2
         version: 6.2.2(jiti@2.4.2)(lightningcss@1.29.2)
@@ -574,6 +577,10 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
+  photoswipe@5.4.4:
+    resolution: {integrity: sha512-WNFHoKrkZNnvFFhbHL93WDkW3ifwVOXSW3w1UuZZelSmgXpIGiZSNlZJq37rR8YejqME2rHs9EhH9ZvlvFH2NA==}
+    engines: {node: '>= 0.12.0'}
+
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
@@ -832,6 +839,9 @@ packages:
 
   tailwindcss@4.0.14:
     resolution: {integrity: sha512-92YT2dpt671tFiHH/e1ok9D987N9fHD5VWoly1CdPD/Cd1HMglvZwP3nx2yTj2lbXDAHt8QssZkxTLCCTNL+xw==}
+
+  tailwindcss@4.0.16:
+    resolution: {integrity: sha512-i/SbG7ThTIcLshcFJL+je7hCv9dPis4Xl4XNeel6iZNX42pp/BZ+la+SbZIPoYE+PN8zhKbnHblpQ/lhOWwIeQ==}
 
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
@@ -1313,6 +1323,8 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
+  photoswipe@5.4.4: {}
+
   picocolors@1.1.1: {}
 
   postcss-calc@10.0.2(postcss@8.5.3):
@@ -1527,6 +1539,8 @@ snapshots:
       picocolors: 1.1.1
 
   tailwindcss@4.0.14: {}
+
+  tailwindcss@4.0.16: {}
 
   tapable@2.2.1: {}
 

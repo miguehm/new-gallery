@@ -3,7 +3,7 @@ export default defineConfig({
   server: {
     open: "/index.html",
   },
-  base: "/new-gallery/",
+  // base: "/new-gallery/",
   publicDir: "public",
   resolve: {
     alias: {},

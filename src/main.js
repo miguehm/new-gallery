@@ -115,6 +115,7 @@ function changeGallery(category, subcategory) {
 
     // Obtener las imágenes para esta categoría/subcategoría
     const images = contentStructure[category][subcategory];
+    console.log(contentStructure);
     // const basePath = `/content/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/`;
 
     // Crear elementos para cada imagen

@@ -1,0 +1,5 @@
+name = "new-gallery"
+compatibility_date = "2023-12-01"
+
+[site]
+bucket = "./dist"

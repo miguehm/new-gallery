@@ -1,0 +1,6 @@
+name = "mi-sitio-estatico"
+compatibility_date = "2025-04-11"
+
+[site]
+bucket = "./dist"
+entry-point = "workers-site"

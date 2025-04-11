@@ -20,7 +20,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write './src/**/*.{html,js,jsx,ts,tsx}'",
-    "generate-json": "npm run generate-json.js"
+    "generate-json": "bun run generate-json.js"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.14",

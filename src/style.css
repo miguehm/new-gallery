@@ -61,3 +61,23 @@
     transform: translateY(0);
   }
 }
+
+
+/* Eliminar márgenes predeterminados de <figure> y asegurar <a> como bloque */
+/* Masonry-like layout con CSS Grid */
+.pswp-gallery {
+  /* Altura mínima de track para cálculo preciso */
+  grid-auto-rows: 4px;
+  grid-auto-flow: row dense;
+}
+.pswp-gallery figure {
+  margin: 0;
+  padding: 0;
+}
+.pswp-gallery figure > a {
+  display: block;
+}
+/* Asegurar que las imágenes no tengan espacios por comportamiento inline */
+.pswp-gallery img {
+  display: block;
+}

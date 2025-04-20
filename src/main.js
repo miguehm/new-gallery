@@ -111,7 +111,7 @@ function changeGallery(category, subcategory) {
   setTimeout(() => {
     gallery.innerHTML = "";
     gallery.className =
-      "pswp-gallery columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
+      "pswp-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
 
     // Obtener las imágenes para esta categoría/subcategoría
     const images = contentStructure[category][subcategory];
@@ -121,7 +121,7 @@ function changeGallery(category, subcategory) {
     // Crear elementos para cada imagen
     images.forEach((image, index) => {
       const imgContainer = document.createElement("figure");
-      imgContainer.className = "mb-4";
+      imgContainer.className = "";
 
       const imgLink = document.createElement("a");
       // imgLink.href = basePath + image;
@@ -149,7 +149,19 @@ function changeGallery(category, subcategory) {
 
       imgLink.appendChild(img);
       imgContainer.appendChild(imgLink);
+      // Añadir cada imagen a la galería
       gallery.appendChild(imgContainer);
+      // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
+      const setRowSpan = () => {
+        const galleryStyle = getComputedStyle(gallery);
+        const rowHeight = parseInt(galleryStyle.getPropertyValue('grid-auto-rows'));
+        const rowGap = parseInt(galleryStyle.getPropertyValue('row-gap'));
+        const totalHeight = img.getBoundingClientRect().height;
+        const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
+        imgContainer.style.gridRowEnd = `span ${rowSpan}`;
+      };
+      img.addEventListener('load', setRowSpan);
+      if (img.complete) setRowSpan();
     });
 
     gallery.classList.remove("fade-out");
@@ -197,7 +209,7 @@ function populateHomeGallery(gallery) {
   // Limpiar la galería
   gallery.innerHTML = "";
   gallery.className =
-    "pswp-gallery columns-1 md:columns-2 lg:columns-4 gap-4 space-y-4";
+    "pswp-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
 
   // Obtener las imágenes aleatorias
   const randomImages = contentStructure["random"];
@@ -205,7 +217,7 @@ function populateHomeGallery(gallery) {
   // Crear elementos para cada imagen
   randomImages.forEach((imagePath, index) => {
     const imgContainer = document.createElement("figure");
-    imgContainer.className = "mb-4";
+    imgContainer.className = "";
 
     const imgLink = document.createElement("a");
     imgLink.href = imagePath;
@@ -229,7 +241,19 @@ function populateHomeGallery(gallery) {
 
     imgLink.appendChild(img);
     imgContainer.appendChild(imgLink);
+    // Añadir cada imagen a la galería
     gallery.appendChild(imgContainer);
+    // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
+    const setRowSpanHome = () => {
+      const galleryStyle = getComputedStyle(gallery);
+      const rowHeight = parseInt(galleryStyle.getPropertyValue('grid-auto-rows'));
+      const rowGap = parseInt(galleryStyle.getPropertyValue('row-gap'));
+      const totalHeight = img.getBoundingClientRect().height;
+      const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
+      imgContainer.style.gridRowEnd = `span ${rowSpan}`;
+    };
+    img.addEventListener('load', setRowSpanHome);
+    if (img.complete) setRowSpanHome();
   });
 
   // Aplicar animación de entrada
@@ -263,9 +287,11 @@ function toggleMenu(id, button) {
     setTimeout(() => activeMenu.classList.remove("menu-open"), 200);
   }
 
-  // Abrir el nuevo menú y marcar el botón
+  // Abrir el nuevo menú y marcar el botón, ajustando dinámicamente a su contenido
   menu.classList.add("menu-open");
-  menu.style.maxHeight = "250px"; // Ajusta la altura según el contenido
+  // Expandir al alto completo del contenido para mostrar todos los items
+  const fullHeight = menu.scrollHeight;
+  menu.style.maxHeight = `${fullHeight}px`;
   button.classList.add("active");
 
   activeMenu = menu;

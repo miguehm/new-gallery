@@ -154,9 +154,9 @@ function changeGallery(category, subcategory) {
       // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
       const setRowSpan = () => {
         const galleryStyle = getComputedStyle(gallery);
-        const rowHeight = parseInt(galleryStyle.getPropertyValue('grid-auto-rows'));
-        const rowGap = parseInt(galleryStyle.getPropertyValue('row-gap'));
-        const totalHeight = img.getBoundingClientRect().height;
+        const rowHeight = parseFloat(galleryStyle.getPropertyValue('grid-auto-rows'));
+        const rowGap = parseFloat(galleryStyle.getPropertyValue('row-gap'));
+        const totalHeight = img.offsetHeight;
         const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
         imgContainer.style.gridRowEnd = `span ${rowSpan}`;
       };
@@ -170,6 +170,8 @@ function changeGallery(category, subcategory) {
 
     // Inicializar PhotoSwipe después de cargar las imágenes
     lightbox = initPhotoSwipe();
+    // Segunda pasada de cálculo para asegurar espacios uniformes
+    setTimeout(() => recalcAll(gallery), 100);
   }, 200);
 }
 
@@ -246,9 +248,9 @@ function populateHomeGallery(gallery) {
     // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
     const setRowSpanHome = () => {
       const galleryStyle = getComputedStyle(gallery);
-      const rowHeight = parseInt(galleryStyle.getPropertyValue('grid-auto-rows'));
-      const rowGap = parseInt(galleryStyle.getPropertyValue('row-gap'));
-      const totalHeight = img.getBoundingClientRect().height;
+      const rowHeight = parseFloat(galleryStyle.getPropertyValue('grid-auto-rows'));
+      const rowGap = parseFloat(galleryStyle.getPropertyValue('row-gap'));
+      const totalHeight = img.offsetHeight;
       const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
       imgContainer.style.gridRowEnd = `span ${rowSpan}`;
     };
@@ -263,6 +265,8 @@ function populateHomeGallery(gallery) {
 
   // Inicializar PhotoSwipe después de cargar las imágenes
   lightbox = initPhotoSwipe();
+  // Segunda pasada de cálculo para asegurar espacios uniformes
+  setTimeout(() => recalcAll(gallery), 100);
 }
 
 // Función para alternar el menú con animación mejorada (mantener igual)
@@ -300,6 +304,19 @@ function toggleMenu(id, button) {
 
 // Cargar la estructura de contenido cuando se carga la página
 document.addEventListener("DOMContentLoaded", loadContentStructure);
+// Recalcula los spans de todas las figuras (para espacios uniformes)
+function recalcAll(gallery) {
+  const style = getComputedStyle(gallery);
+  const rowHeight = parseFloat(style.getPropertyValue('grid-auto-rows'));
+  const rowGap = parseFloat(style.getPropertyValue('row-gap'));
+  gallery.querySelectorAll('figure').forEach(container => {
+    const img = container.querySelector('img');
+    if (!img) return;
+    const totalHeight = img.offsetHeight;
+    const span = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
+    container.style.gridRowEnd = `span ${span}`;
+  });
+}
 
 const nameTitle = document.getElementById("name-title");
 nameTitle.onclick = homeImages;

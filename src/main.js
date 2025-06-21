@@ -1,12 +1,19 @@
+// Importar Macy.js
+import Macy from 'macy';
+
 // Variable global para almacenar la estructura de contenido
 let contentStructure = null;
 let activeMenu = null;
 let activeButton = null;
 let lightbox = null;
+let macyInstance = null;
 
 // Importar la función de inicialización de PhotoSwipe
 import { initPhotoSwipe } from "./photoswipe";
 // import "photoswipe/style.css";
+
+// Verificar que Macy.js se importó correctamente
+console.log('Macy.js importado:', typeof Macy);
 
 // Función para cargar la estructura de contenido
 async function loadContentStructure() {
@@ -86,15 +93,100 @@ function capitalizeAllLetters(string) {
   return string.toUpperCase();
 }
 
+// Función para inicializar Macy.js
+function initMacy() {
+  console.log('Inicializando Macy.js...');
+  
+  try {
+    // Destruir instancia anterior si existe
+    if (macyInstance) {
+      console.log('Destruyendo instancia anterior de Macy...');
+      try {
+        if (typeof macyInstance.destroy === 'function') {
+          macyInstance.destroy();
+          console.log('Macy.js destruido exitosamente');
+        } else {
+          console.log('No se encontró método de destrucción');
+        }
+      } catch (error) {
+        console.error('Error al destruir Macy.js:', error);
+      }
+      macyInstance = null;
+    }
+
+    const gallery = document.getElementById("gallery");
+    if (!gallery) {
+      console.error('No se encontró el elemento gallery');
+      return;
+    }
+
+    if (gallery.children.length === 0) {
+      console.log('Galería vacía, no se puede inicializar Macy');
+      return;
+    }
+
+    console.log('Creando nueva instancia de Macy...');
+    // Crear nueva instancia de Macy
+    macyInstance = Macy({
+      container: '#gallery',
+      trueOrder: false,
+      waitForImages: false,
+      margin: 16,
+      columns: 4,
+      breakAt: {
+        1200: 4,
+        940: 3,
+        768: 2,
+        520: 1
+      }
+    });
+
+    console.log('Macy.js inicializado correctamente');
+    
+  } catch (error) {
+    console.error('Error al inicializar Macy.js:', error);
+  }
+}
+
+// Función para esperar a que todas las imágenes se carguen
+function waitForImagesToLoad(gallery, callback) {
+  const images = gallery.querySelectorAll('img');
+  let loadedCount = 0;
+  const totalImages = images.length;
+
+  console.log(`Esperando a que se carguen ${totalImages} imágenes...`);
+
+  if (totalImages === 0) {
+    console.log('No hay imágenes para cargar');
+    callback();
+    return;
+  }
+
+  const checkAllLoaded = () => {
+    loadedCount++;
+    console.log(`Imagen ${loadedCount}/${totalImages} cargada`);
+    if (loadedCount === totalImages) {
+      console.log('Todas las imágenes cargadas');
+      callback();
+    }
+  };
+
+  images.forEach(img => {
+    if (img.complete && img.naturalHeight !== 0) {
+      checkAllLoaded();
+    } else {
+      img.addEventListener('load', checkAllLoaded);
+      img.addEventListener('error', checkAllLoaded);
+    }
+  });
+}
+
 // Función para cambiar dinámicamente la galería con animación
 function changeGallery(category, subcategory) {
+  console.log(`Cambiando galería a: ${category} - ${subcategory}`);
+  
   const gallery = document.getElementById("gallery");
-
-  // Destruir la instancia anterior de PhotoSwipe si existe
-  if (lightbox) {
-    lightbox.destroy();
-    lightbox = null;
-  }
+  console.log('Galería encontrada para cambio:', !!gallery);
 
   // Remover clase activa de todos los botones
   document.querySelectorAll(".menu-content button").forEach((btn) => {
@@ -105,78 +197,108 @@ function changeGallery(category, subcategory) {
   const clickedButton = window.event.target;
   clickedButton.classList.add("active");
 
+  // Regresar scroll al inicio de forma instantánea
+  window.scrollTo(0, 0);
+
   // Aplicar animación de salida
+  console.log('Aplicando animación de salida...');
   gallery.classList.add("fade-out");
 
   setTimeout(() => {
-    gallery.innerHTML = "";
-    gallery.className =
-      "pswp-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
+    console.log('Iniciando timeout de cambio de galería...');
+    
+    // Limpiar completamente la galería
+    clearGallery();
 
     // Obtener las imágenes para esta categoría/subcategoría
     const images = contentStructure[category][subcategory];
-    console.log(contentStructure);
-    // const basePath = `/content/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/`;
+    console.log(`Preparando ${images.length} imágenes para ${subcategory}`);
 
-    // Crear elementos para cada imagen
+    // Preparar galería
+    gallery.classList.remove("fade-out");
+    gallery.classList.add("fade-in");
+
+    // Crear elementos para todas las imágenes primero
     images.forEach((image, index) => {
       const imgContainer = document.createElement("figure");
       imgContainer.className = "";
+      imgContainer.style.opacity = "0"; // Inicialmente oculto
+      imgContainer.style.transform = "translateY(30px) scale(0.95)";
 
       const imgLink = document.createElement("a");
-      // imgLink.href = basePath + image;
       imgLink.href = image;
       imgLink.className = "pswp-item";
 
-      // No definir dimensiones fijas para permitir que PhotoSwipe detecte las reales
-      // Se maneja ahora con el evento contentLoad en photoswipe.js
-
       const img = document.createElement("img");
-      // img.src = basePath + image;
       img.src = image;
       img.className = "w-full rounded-xl shadow";
-      img.alt = `${subcategory} - Imagen ${index + 1}`;
+      img.alt = `Imagen ${index + 1}`;
 
       // Pre-carga la imagen para obtener sus dimensiones reales
       const tempImg = new Image();
       tempImg.onload = function () {
-        // Una vez cargada, establecer las dimensiones reales
         imgLink.dataset.pswpWidth = tempImg.naturalWidth;
         imgLink.dataset.pswpHeight = tempImg.naturalHeight;
       };
-      // tempImg.src = basePath + image;
       tempImg.src = image;
 
       imgLink.appendChild(img);
       imgContainer.appendChild(imgLink);
-      // Añadir cada imagen a la galería
       gallery.appendChild(imgContainer);
-      // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
-      const setRowSpan = () => {
-        const galleryStyle = getComputedStyle(gallery);
-        const rowHeight = parseFloat(galleryStyle.getPropertyValue('grid-auto-rows'));
-        const rowGap = parseFloat(galleryStyle.getPropertyValue('row-gap'));
-        const totalHeight = img.offsetHeight;
-        const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
-        imgContainer.style.gridRowEnd = `span ${rowSpan}`;
-      };
-      img.addEventListener('load', setRowSpan);
-      if (img.complete) setRowSpan();
     });
 
-    gallery.classList.remove("fade-out");
-    void gallery.offsetWidth; // Forzar reflow
-    gallery.classList.add("fade-in");
+    // Agregar overlay de carga después de las imágenes
+    const loadingOverlay = document.createElement("div");
+    loadingOverlay.className = "loading-overlay";
+    loadingOverlay.textContent = "Cargando...";
+    gallery.appendChild(loadingOverlay);
 
-    // Inicializar PhotoSwipe después de cargar las imágenes
-    lightbox = initPhotoSwipe();
-    // Segunda pasada de cálculo para asegurar espacios uniformes
-    setTimeout(() => recalcAll(gallery), 100);
+    // Mostrar el overlay inmediatamente
+    setTimeout(() => {
+      loadingOverlay.style.opacity = "1";
+    }, 10);
+
+    // Esperar a que todas las imágenes se carguen
+    waitForImagesToLoad(gallery, () => {
+      console.log('Todas las imágenes cargadas, inicializando Macy.js...');
+      
+      // Agregar un delay mínimo para que se vea el overlay
+      setTimeout(() => {
+        // Remover overlay de carga
+        if (loadingOverlay && loadingOverlay.parentNode) {
+          loadingOverlay.remove();
+        }
+        
+        // Inicializar Macy.js
+        initMacy();
+        
+        // Mostrar las imágenes con animación más rápida después de que Macy esté listo
+        setTimeout(() => {
+          gallery.classList.add('loaded');
+          
+          const figures = gallery.querySelectorAll('figure');
+          figures.forEach((figure, index) => {
+            setTimeout(() => {
+              figure.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+              figure.style.opacity = "1";
+              figure.style.transform = "translateY(0) scale(1)";
+            }, index * 50); // Más rápido: 50ms en lugar de 100ms
+          });
+          
+          // Inicializar PhotoSwipe
+          lightbox = initPhotoSwipe();
+          console.log('PhotoSwipe inicializado');
+        }, 150); // Más rápido: 150ms en lugar de 300ms
+      }, 500); // Delay mínimo para mostrar el overlay
+    });
+
   }, 200);
 }
 
 // Función para mostrar imágenes aleatorias en la página principal
 function homeImages() {
+  console.log('Cargando galería de inicio...');
+  
   // Verificar si contentStructure está cargado
   if (!contentStructure || !contentStructure["random"]) {
     // Si la estructura no está cargada todavía, programar para ejecutar después
@@ -186,11 +308,8 @@ function homeImages() {
 
   const gallery = document.getElementById("gallery");
 
-  // Destruir la instancia anterior de PhotoSwipe si existe
-  if (lightbox) {
-    lightbox.destroy();
-    lightbox = null;
-  }
+  // Regresar scroll al inicio de forma instantánea
+  window.scrollTo(0, 0);
 
   // Aplicar animación de salida si ya hay contenido
   if (gallery.children.length > 0) {
@@ -206,67 +325,93 @@ function homeImages() {
 }
 
 // Función auxiliar para poblar la galería con imágenes aleatorias
-// Función auxiliar para poblar la galería con imágenes aleatorias
 function populateHomeGallery(gallery) {
-  // Limpiar la galería
-  gallery.innerHTML = "";
-  gallery.className =
-    "pswp-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
+  console.log('Poblando galería de inicio...');
+  
+  // Limpiar completamente la galería
+  clearGallery();
 
   // Obtener las imágenes aleatorias
-  const randomImages = contentStructure["random"];
+  const images = contentStructure["random"];
+  console.log(`Preparando ${images.length} imágenes aleatorias`);
 
-  // Crear elementos para cada imagen
-  randomImages.forEach((imagePath, index) => {
+  // Preparar galería
+  gallery.classList.remove("fade-out");
+  gallery.classList.add("fade-in");
+
+  // Crear elementos para todas las imágenes primero
+  images.forEach((image, index) => {
     const imgContainer = document.createElement("figure");
     imgContainer.className = "";
+    imgContainer.style.opacity = "0"; // Inicialmente oculto
+    imgContainer.style.transform = "translateY(30px) scale(0.95)";
 
     const imgLink = document.createElement("a");
-    imgLink.href = imagePath;
+    imgLink.href = image;
     imgLink.className = "pswp-item";
 
-    // No especificar dimensiones fijas inicialmente
-
     const img = document.createElement("img");
-    img.src = imagePath; // Las rutas ya vienen completas
+    img.src = image;
     img.className = "w-full rounded-xl shadow";
-    img.alt = `Imagen destacada ${index + 1}`;
+    img.alt = `Imagen ${index + 1}`;
 
     // Pre-carga la imagen para obtener sus dimensiones reales
     const tempImg = new Image();
     tempImg.onload = function () {
-      // Una vez cargada, establecer las dimensiones reales
       imgLink.dataset.pswpWidth = tempImg.naturalWidth;
       imgLink.dataset.pswpHeight = tempImg.naturalHeight;
     };
-    tempImg.src = imagePath;
+    tempImg.src = image;
 
     imgLink.appendChild(img);
     imgContainer.appendChild(imgLink);
-    // Añadir cada imagen a la galería
     gallery.appendChild(imgContainer);
-    // Ajuste de filas para efecto mosaico (CSS Grid Masonry), con manejo de cache
-    const setRowSpanHome = () => {
-      const galleryStyle = getComputedStyle(gallery);
-      const rowHeight = parseFloat(galleryStyle.getPropertyValue('grid-auto-rows'));
-      const rowGap = parseFloat(galleryStyle.getPropertyValue('row-gap'));
-      const totalHeight = img.offsetHeight;
-      const rowSpan = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
-      imgContainer.style.gridRowEnd = `span ${rowSpan}`;
-    };
-    img.addEventListener('load', setRowSpanHome);
-    if (img.complete) setRowSpanHome();
   });
 
-  // Aplicar animación de entrada
-  gallery.classList.remove("fade-out");
-  void gallery.offsetWidth; // Forzar reflow
-  gallery.classList.add("fade-in");
+  // Agregar overlay de carga después de las imágenes
+  const loadingOverlay = document.createElement("div");
+  loadingOverlay.className = "loading-overlay";
+  loadingOverlay.textContent = "Cargando...";
+  gallery.appendChild(loadingOverlay);
 
-  // Inicializar PhotoSwipe después de cargar las imágenes
-  lightbox = initPhotoSwipe();
-  // Segunda pasada de cálculo para asegurar espacios uniformes
-  setTimeout(() => recalcAll(gallery), 100);
+  // Mostrar el overlay inmediatamente
+  setTimeout(() => {
+    loadingOverlay.style.opacity = "1";
+  }, 10);
+
+  // Esperar a que todas las imágenes se carguen
+  waitForImagesToLoad(gallery, () => {
+    console.log('Todas las imágenes cargadas, inicializando Macy.js...');
+    
+    // Agregar un delay mínimo para que se vea el overlay
+    setTimeout(() => {
+      // Remover overlay de carga
+      if (loadingOverlay && loadingOverlay.parentNode) {
+        loadingOverlay.remove();
+      }
+      
+      // Inicializar Macy.js
+      initMacy();
+      
+      // Mostrar las imágenes con animación más rápida después de que Macy esté listo
+      setTimeout(() => {
+        gallery.classList.add('loaded');
+        
+        const figures = gallery.querySelectorAll('figure');
+        figures.forEach((figure, index) => {
+          setTimeout(() => {
+            figure.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+            figure.style.opacity = "1";
+            figure.style.transform = "translateY(0) scale(1)";
+          }, index * 50); // Más rápido: 50ms en lugar de 100ms
+        });
+        
+        // Inicializar PhotoSwipe
+        lightbox = initPhotoSwipe();
+        console.log('PhotoSwipe inicializado para galería de inicio');
+      }, 150); // Más rápido: 150ms en lugar de 300ms
+    }, 500); // Delay mínimo para mostrar el overlay
+  });
 }
 
 // Función para alternar el menú con animación mejorada (mantener igual)
@@ -302,21 +447,54 @@ function toggleMenu(id, button) {
   activeButton = button;
 }
 
+// Función para limpiar completamente la galería
+function clearGallery() {
+  console.log('Iniciando limpieza de galería...');
+  
+  const gallery = document.getElementById("gallery");
+  console.log('Galería encontrada:', !!gallery);
+  
+  // Destruir Macy.js
+  if (macyInstance) {
+    console.log('Destruyendo Macy.js...');
+    try {
+      if (typeof macyInstance.destroy === 'function') {
+        macyInstance.destroy();
+        console.log('Macy.js destruido exitosamente');
+      } else {
+        console.log('No se encontró método de destrucción');
+      }
+    } catch (error) {
+      console.error('Error al destruir Macy.js:', error);
+    }
+    macyInstance = null;
+  } else {
+    console.log('No hay instancia de Macy.js para destruir');
+  }
+  
+  // Destruir PhotoSwipe
+  if (lightbox) {
+    console.log('Destruyendo PhotoSwipe...');
+    try {
+      lightbox.destroy();
+      console.log('PhotoSwipe destruido exitosamente');
+    } catch (error) {
+      console.error('Error al destruir PhotoSwipe:', error);
+    }
+    lightbox = null;
+  } else {
+    console.log('No hay instancia de PhotoSwipe para destruir');
+  }
+  
+  // Limpiar galería
+  console.log('Limpiando contenido de la galería...');
+  gallery.innerHTML = "";
+  gallery.className = "pswp-gallery"; // Remover clase 'loaded'
+  console.log('Limpieza de galería completada');
+}
+
 // Cargar la estructura de contenido cuando se carga la página
 document.addEventListener("DOMContentLoaded", loadContentStructure);
-// Recalcula los spans de todas las figuras (para espacios uniformes)
-function recalcAll(gallery) {
-  const style = getComputedStyle(gallery);
-  const rowHeight = parseFloat(style.getPropertyValue('grid-auto-rows'));
-  const rowGap = parseFloat(style.getPropertyValue('row-gap'));
-  gallery.querySelectorAll('figure').forEach(container => {
-    const img = container.querySelector('img');
-    if (!img) return;
-    const totalHeight = img.offsetHeight;
-    const span = Math.ceil((totalHeight + rowGap) / (rowHeight + rowGap));
-    container.style.gridRowEnd = `span ${span}`;
-  });
-}
 
 const nameTitle = document.getElementById("name-title");
 nameTitle.onclick = homeImages;

@@ -38,12 +38,20 @@
   -webkit-text-size-adjust: 100%;
 }
 
+/* Estilos para el menú lateral */
+@media (min-width: 768px) {
+  .md\:w-auto {
+    width: fit-content;
+    min-width: max-content;
+  }
+}
+
 .menu-content button.active {
   text-decoration: underline;
 }
 
 .fade-in {
-  animation: fadeIn 0.5s ease-in forwards;
+  animation: fadeIn 0.3s ease-in forwards;
 }
 
 .fade-out {
@@ -62,22 +70,82 @@
   }
 }
 
-
-/* Eliminar márgenes predeterminados de <figure> y asegurar <a> como bloque */
-/* Masonry-like layout con CSS Grid */
-.pswp-gallery {
-  /* Altura mínima de track para cálculo preciso */
-  grid-auto-rows: 1px;
-  grid-auto-flow: row dense;
+/* Loading overlay styles */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgba(36, 36, 36, 0.95);
+  color: #888;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-align: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+  min-height: 400px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  padding-top: 100px;
 }
+
+.loading-overlay::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid #888;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Macy.js Gallery Styles */
+.pswp-gallery {
+  width: 100%;
+  opacity: 0; /* Inicialmente oculto */
+  transition: opacity 0.5s ease-in-out;
+  min-height: 200px; /* Altura mínima para evitar saltos */
+  position: relative; /* Para posicionar el overlay */
+}
+
+.pswp-gallery.loaded {
+  opacity: 1; /* Mostrar cuando esté listo */
+}
+
 .pswp-gallery figure {
   margin: 0;
   padding: 0;
+  margin-bottom: 16px;
+  opacity: 0; /* Inicialmente oculto */
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
+
 .pswp-gallery figure > a {
   display: block;
 }
-/* Asegurar que las imágenes no tengan espacios por comportamiento inline */
+
 .pswp-gallery img {
   display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+}
+
+.pswp-gallery img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 }

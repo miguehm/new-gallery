@@ -57,14 +57,16 @@
     <div class="flex w-full flex-col gap-6 md:flex-row">
       <!-- Sección de Texto -->
       <div
-        class="mr-6 w-full text-left md:sticky md:top-12 md:mr-12 md:w-1/3 md:self-start"
+        class="mr-6 w-full text-left md:sticky md:top-12 md:mr-12 md:w-auto md:self-start"
       >
         <h1
           class="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-5xl font-extrabold text-transparent"
           id="name-title"
           style="cursor: pointer"
         >
-          miguel hernandez moreno
+          <span style="display: block;">miguel</span>
+          <span style="display: block;">hernandez</span>
+          <span style="display: block;">moreno</span>
         </h1>
         <small
           class="mt-2 block text-base font-semibold text-gray-500 md:text-lg dark:text-gray-400"
@@ -133,7 +135,7 @@
 
       <!-- Galería de Imágenes -->
       <div
-        class="pswp-gallery grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+        class="pswp-gallery"
         id="gallery"
       >
         <!-- Las imágenes se cargarán dinámicamente -->

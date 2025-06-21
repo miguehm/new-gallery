@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "cssnano": "^7.0.6",
+    "macy": "^2.5.1",
     "photoswipe": "^5.4.4"
   }
 }
